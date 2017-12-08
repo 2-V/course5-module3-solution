@@ -1,0 +1,7 @@
+{{mySearch.foundItems}}
+<div class="row" ng-repeat="item in mySearch.foundItems">
+	<div class="col-sm-6"> {{ item.name }}</div>
+	<div class="col-sm-2"> 
+		<button ng-click="item.removeItem($index);">Don't want this one!</button>
+	</div>
+</div>
