@@ -4,66 +4,68 @@
 	angular.module('NarrowItDownApp',[])
 	.controller('NarrowItDownController', NarrowItDownController)
 	.service('MenuSearchService', MenuSearchService)
-	.directive('foundItems', foundItems);
+	.directive('foundItems', FoundItems);
 	
 
 	NarrowItDownController.$inject = ['MenuSearchService'];
 	function NarrowItDownController(MenuSearchService){
 		
 		var mySearch = this;
+		mySearch.searchTerm = '';
 
-		mySearch.foundItems = function (searchTerm) {
-			MenuSearchService.getMatchedMenuItems(searchTerm);
+		mySearch.searchItems = function () {
+			MenuSearchService.getMatchedMenuItems(mySearch.searchTerm)
+			.then(function(result){
+				mySearch.items = result;
+			});
+		};
 
-		}
+		mySearch.removeItem = function (itemIndex){
+			return MenuSearchService.removeItem(itemIndex);
+		};
+	};
 
-
-	}
-
-	function foundItems(){
+	function FoundItems(){
 		var ddo = {
 			templateUrl: 'foundItems.html',
 			scope: {
-				items: '<'
-			},
-			controller: 'NarrowItDownController as mySearch',
-			bindToController: true
-		}
+				items: '<',
+				onRemove: '&'
+			}
+		};
 
 		return ddo;
 	};
 
+	MenuSearchService.$inject = ['$http'];
 	function MenuSearchService ($http) {
 
 		var service = this;
-
+		var foundItems = [];
 
 		service.getMatchedMenuItems = function(searchTerm) {
-			 console.log("search term: " + searchTerm);
 			return $http({
 				method: "GET",
 				url: "https://davids-restaurant.herokuapp.com/menu_items.json"
 			}).then(function (result) {
 
 			    // process result and only keep items that match
-			    var foundItems = [];
-
 			    for (var j = 0; j < result.data.menu_items.length; j++){
 				    if (result.data.menu_items[j].name.toLowerCase().indexOf(searchTerm) !== -1) {
 				    	foundItems.push( {name : result.data.menu_items[j].name, short_name : result.data.menu_items[j].name})
 				    }
 			    }
 
-
 			    // return processed items
-			    console.log(foundItems);
 			    return foundItems;
 			});
 
 		}
 
-	}
+		service.removeItem = function (itemIndex) {
+			foundItems.splice(itemIndex, 1);
+			return foundItems;
+		};
+	};
 	
-
-
 })();
