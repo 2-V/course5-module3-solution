@@ -19,6 +19,9 @@
     </div>
 
     <div class="row"></div>
+    <div ng-if="mySearch.empty" class="alert alert-danger" > 
+      Nothing found
+    </div>
     <!-- found-items should be implemented as a component -->
     <found-items items="mySearch.items" on-remove="mySearch.removeItem(index)"></found-items>
   </div>

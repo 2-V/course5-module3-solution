@@ -12,12 +12,23 @@
 		
 		var mySearch = this;
 		mySearch.searchTerm = '';
+		mySearch.items = '';
+		mySearch.empty = false; 
 
 		mySearch.searchItems = function () {
-			MenuSearchService.getMatchedMenuItems(mySearch.searchTerm)
-			.then(function(result){
-				mySearch.items = result;
-			});
+			if(mySearch.searchTerm.length == 0){
+				mySearch.empty = true;
+			} else{
+				MenuSearchService.getMatchedMenuItems(mySearch.searchTerm)
+				.then(function(result){
+					if(result.length == 0){
+						mySearch.empty = true;
+					} else {
+						mySearch.items = result;
+					}
+					
+				});
+			};
 		};
 
 		mySearch.removeItem = function (itemIndex){
@@ -31,7 +42,8 @@
 			scope: {
 				items: '<',
 				onRemove: '&'
-			}
+			},
+			restrict: 'E'
 		};
 
 		return ddo;
