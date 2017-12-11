@@ -16,6 +16,7 @@
 		mySearch.empty = false; 
 
 		mySearch.searchItems = function () {
+			mySearch.items = [];
 			if(mySearch.searchTerm.length == 0){
 				mySearch.empty = true;
 			} else{
