@@ -52,7 +52,7 @@
 			    // process result and only keep items that match
 			    for (var j = 0; j < result.data.menu_items.length; j++){
 				    if (result.data.menu_items[j].name.toLowerCase().indexOf(searchTerm) !== -1) {
-				    	foundItems.push( {name : result.data.menu_items[j].name, short_name : result.data.menu_items[j].name})
+				    	foundItems.push( {name : result.data.menu_items[j].name, short_name : result.data.menu_items[j].short_name, description : result.data.menu_items[j].description})
 				    }
 			    }
 
