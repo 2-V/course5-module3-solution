@@ -24,6 +24,7 @@
 					if(result.length == 0){
 						mySearch.empty = true;
 					} else {
+						mySearch.empty = false;
 						mySearch.items = result;
 					}
 					
